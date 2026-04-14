@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -87,12 +88,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double acceleration =
                 Math.sqrt(x*x + y*y + z*z);
 
-        if (acceleration > 12) {
+        if (acceleration > 10) {
 
             if (!isDriving) {
 
                 isDriving = true;
-                statusText.setText("Driving Detected 🚗");
+                Intent intent =
+                        new Intent(MainActivity.this,
+                                OverlayService.class);
+
+                startService(intent);
 
             }
 
@@ -101,7 +106,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (isDriving) {
 
                 isDriving = false;
-                statusText.setText("No Driving Detected");
+                Intent intent =
+                        new Intent(MainActivity.this,
+                                OverlayService.class);
+
+                stopService(intent);
 
             }
 
